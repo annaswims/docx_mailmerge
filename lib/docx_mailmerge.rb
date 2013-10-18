@@ -1,5 +1,7 @@
+require 'rubygems'
+require 'nokogiri'
+require 'zipruby'
 require "docx_mailmerge/version"
 
-module DocxMailmerge
-  # Your code goes here...
-end
+require 'docx_mailmerge/template_processor'
+require 'docx_mailmerge/docx_creator'

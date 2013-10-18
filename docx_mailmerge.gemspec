@@ -6,18 +6,20 @@ require 'docx_mailmerge/version'
 Gem::Specification.new do |spec|
   spec.name          = "docx_mailmerge"
   spec.version       = DocxMailmerge::VERSION
-  spec.authors       = ["Anna"]
+  spec.authors       = ["Anna Carey"]
   spec.email         = ["acarey@discoversdc.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = %q{A ruby library to emulate the functionality of Microsoft Word's mail merge. }
+  spec.summary       = %q{Given a Word .docx ducument with mailmerge fields and a hash of the data this gem will create a merged word document}
+  spec.homepage      = "https://github.com/annaswims/docx_mailmerge"
   spec.license       = "MIT"
-
+  spec.rdoc_options  = ["--charset=UTF-8"]
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
-
+  spec.add_dependency("nokogiri")
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
+  spec.add_dependency("zipruby-compat", "~> 0.3.7")
+  spec.add_development_dependency("rspec")
 end
