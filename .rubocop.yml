@@ -1,0 +1,10 @@
+LineLength:
+  Max: 200
+StringLiterals:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+SpaceInsideHashLiteralBraces:
+  Enabled: false

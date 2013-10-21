@@ -15,3 +15,24 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = 'random'
 end
+
+require 'rubygems'
+require 'bundler'
+Bundler.setup
+
+require 'rspec'
+require 'nokogiri'
+require 'fileutils'
+require 'docx_mailmerge'
+require 'nokogiri/diff'
+
+SPEC_BASE_PATH = Pathname.new(File.expand_path(File.dirname(__FILE__)))
+
+RSpec::Matchers.define :be_same_xml_as do |expected|
+  match do |actual|
+    (Nokogiri::XML(actual).diff(Nokogiri::XML expected)).all? do |c, dummy|
+      c == " "
+    end
+  end
+  diffable
+end
