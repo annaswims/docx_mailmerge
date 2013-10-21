@@ -18,17 +18,9 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+DocxCreator.new(input_docx_file_path, data_hash).generate_docx_file(output_docxfile_path)
 
 ## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
-
-  # dmfc = DocxMerge.new("/Users/annacarey/code/nextgear/legalgen/doc/complex/unmerged/doc/word/document.xml", {"First_Name"=>"Anna", "Last_Name" => "Carey"})
 
 
 # zipruby specifically because:
