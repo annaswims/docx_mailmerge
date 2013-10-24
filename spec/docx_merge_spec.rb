@@ -15,15 +15,14 @@ describe DocxMailmerge::DocxMerge do
 
   let(:data) { Marshal.load(Marshal.dump(DocxMailmerge::TestData::DATA)) } # deep copy
 
-  let(:simple_parser) { DocxMailmerge::DocxMerge.new(simple_xml)}
-  let(:complex_parser) { DocxMailmerge::DocxMerge.new(complex_xml)}
-  let(:nomerge_parser) { DocxMailmerge::DocxMerge.new(nomerge_xml)}
-
+  let(:simple_parser) { DocxMailmerge::DocxMerge.new(simple_xml) }
+  let(:complex_parser) { DocxMailmerge::DocxMerge.new(complex_xml) }
+  let(:nomerge_parser) { DocxMailmerge::DocxMerge.new(nomerge_xml) }
 
   context "simple valid xml" do
     it "should return an array of fields" do
-       out = simple_parser.field_names
-       out.should =~ %w{First_Name Last_Name}
+      out = simple_parser.field_names
+      out.should =~ %w{First_Name Last_Name}
     end
 
     it "should render and still be valid XML" do
@@ -40,9 +39,9 @@ describe DocxMailmerge::DocxMerge do
     end
 
     it "leave everything that is not a merge field the same" do
-       input = Nokogiri::XML.parse(nomerge_xml).to_xml
-       out = nomerge_parser.merge(data)
-       input.should be_same_xml_as out
+      input = Nokogiri::XML.parse(nomerge_xml).to_xml
+      out = nomerge_parser.merge(data)
+      input.should be_same_xml_as out
     end
 
     it "should enter Missing Value text for a blank value" do
@@ -70,8 +69,8 @@ describe DocxMailmerge::DocxMerge do
     end
 
     it "should return an array of fields" do
-       out = complex_parser.field_names
-       out.should =~ %w{First_Name Last_Name}
+      out = complex_parser.field_names
+      out.should =~ %w{First_Name Last_Name}
     end
 
   end

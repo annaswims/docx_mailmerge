@@ -35,9 +35,9 @@ end
 
 RSpec::Matchers.define :be_same_xml_as do |expected|
   match do |actual|
-    (Nokogiri::XML(actual).diff(Nokogiri::XML expected)).all? do |change,node|
+    (Nokogiri::XML(actual).diff(Nokogiri::XML expected)).all? do |change, node|
       unless change.blank?
-        puts("start#{node.to_xml}end#{node.parent.path}") 
+        puts("start#{node.to_xml}end#{node.parent.path}")
         # puts node.to_xml.to_enum(:each_byte).to_a
       end
       change.blank?

@@ -32,8 +32,8 @@ module DocxMailmerge
     def copy_or_template(entry_name, f, data)
       # Inside the word document archive is one file with contents of the actual document. Modify it.
       if entry_name == 'word/document.xml'
-       template_processor=  DocxMerge.new(f.read)
-       template_processor.merge(data)
+        template_processor =  DocxMerge.new(f.read)
+        template_processor.merge(data)
       else
         f.read
       end

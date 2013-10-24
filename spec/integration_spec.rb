@@ -38,7 +38,7 @@ describe "integration test", integration: true do
     end
     it "generates a file with the same contents as the input docx" do
       input_entries = ZipRuby::Archive.open(simple_input_file) { |z| z.map(&:name) }
-      DocxMailmerge::DocxCreator.new(simple_input_file).generate_docx_file(data,output_file)
+      DocxMailmerge::DocxCreator.new(simple_input_file).generate_docx_file(data, output_file)
       output_entries = ZipRuby::Archive.open(output_file) { |z| z.map(&:name) }
 
       input_entries.should == output_entries
