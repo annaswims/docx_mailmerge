@@ -3,18 +3,19 @@ module DocxMailmerge
     MISSING_VALUE_TEXT = "***MISSING VALUE***"
     attr_reader :doc, :data
 
-    def initialize(data)
-      @data = data
+    def initialize(file)
+      @original_doc = Nokogiri::XML(file)
+      @doc = @original_doc.clone
     end
 
     def field_names
       (simple_field_names + complex_field_names).uniq
     end
 
-    def merge(file)
-      @doc = Nokogiri::XML(file)
-      simple_merge
-      complex_merge
+    def merge(data)
+      @doc = @original_doc.clone
+      simple_merge(data)
+      complex_merge(data)
       @doc.to_xml
     end
 
@@ -35,20 +36,20 @@ module DocxMailmerge
     end
 
     def complex_field_names
-      complex_merge_nodes do |complex_node|
+      complex_merge_nodes.map do |complex_node|
         first_mergefield_name complex_node.content
       end
     end
 
-    def simple_merge
+    def simple_merge(data)
       simple_merge_nodes.each do |simple_node|
-        ft = field_text(simple_node["w:instr"])
+        ft = field_text(data, simple_node["w:instr"])
         simple_node.search(".//w:t").first.content = ft
         simple_node.replace(simple_node.children)
       end
     end
 
-    def complex_merge
+    def complex_merge(data)
       complex_merge_nodes.each do |complex_node|
         # begin tag
         complex_node.parent.previous_element.remove
@@ -57,7 +58,7 @@ module DocxMailmerge
         complex_node.parent.next_element.remove
 
         text_node = complex_node.parent.next_element
-        text_node.search(".//w:t").first.content = field_text(complex_node.content)
+        text_node.search(".//w:t").first.content = field_text(data, complex_node.content)
 
         # end tag and potientally more extra junk
         search_result = ""
@@ -71,9 +72,9 @@ module DocxMailmerge
       end
     end
 
-    def field_text(node)
+    def field_text(data, node)
       field_name = first_mergefield_name(node)
-      @data[field_name] || "#{MISSING_VALUE_TEXT}#{field_name}"
+      data[field_name] || "#{MISSING_VALUE_TEXT}#{field_name}"
     end
 
     def first_mergefield_name(node)

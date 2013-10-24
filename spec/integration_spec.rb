@@ -16,7 +16,7 @@ describe "integration test", integration: true do
 
   context "should process in incoming docx" do
     it "generates a valid zip file (.docx)" do
-      DocxMailmerge::DocxCreator.new(simple_input_file, data).generate_docx_file(output_file)
+      DocxMailmerge::DocxCreator.new(simple_input_file).generate_docx_file(data, output_file)
 
       archive = ZipRuby::Archive.open(output_file)
       archive.close
@@ -30,10 +30,15 @@ describe "integration test", integration: true do
 
       system cmd
     end
+    
+    it "returns an array of merge fields" do
+      merge_fields = DocxMailmerge::DocxCreator.new(simple_input_file).merge_field_names
+      merge_fields.should =~  %w{First_Name Last_Name}
 
+    end
     it "generates a file with the same contents as the input docx" do
       input_entries = ZipRuby::Archive.open(simple_input_file) { |z| z.map(&:name) }
-      DocxMailmerge::DocxCreator.new(simple_input_file, data).generate_docx_file(output_file)
+      DocxMailmerge::DocxCreator.new(simple_input_file).generate_docx_file(data,output_file)
       output_entries = ZipRuby::Archive.open(output_file) { |z| z.map(&:name) }
 
       input_entries.should == output_entries
