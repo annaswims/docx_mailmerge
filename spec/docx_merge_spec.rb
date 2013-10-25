@@ -74,6 +74,7 @@ describe DocxMailmerge::DocxMerge do
     end
 
   end
+
 end
   # it "should replace all simple keys with values" do
   #   non_array_keys = data.reject { |k, v| v.class == Array }
