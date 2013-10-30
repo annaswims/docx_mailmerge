@@ -73,12 +73,14 @@ module DocxMailmerge
     end
 
     def field_text(data, node)
+      #TODO: replacement text formatting  \* Upper \* MERGEFORMAT  \* Caps
       field_name = first_mergefield_name(node)
       data[field_name] || "#{MISSING_VALUE_TEXT}#{field_name}"
     end
 
     def first_mergefield_name(node)
-      node.match(/ MERGEFIELD \"(.*)\"/)[1]
+      matches = node.match(/MERGEFIELD\s*\"?([\w]*)\"?(.*)/)
+      return matches[1]
     end
 
   end
