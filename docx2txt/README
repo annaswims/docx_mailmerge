@@ -1,0 +1,180 @@
+docx2txt (http://docx2txt.sourceforge.net/) is a simple tool to generate
+equivalent text files from Microsoft .docx documents, with an attempt towards
+preserving sufficient formatting and document information, and appropriate
+character conversions for a good text experience.
+
+You need to atleast have perl installed on your system for using this tool.
+
+
+How to Use
+----------
+
+You can do the text conversion in different ways depending upon your usage
+environment.
+
+1. Using docx2txt.sh :
+
+   docx2txt.sh file.docx
+          OR
+   docx2txt.sh file
+
+   In both these cases output text will be saved in file.txt .
+
+2. Using docx2txt.bat :
+
+   docx2txt.bat file.docx
+          OR
+   docx2txt.bat file
+
+   In both these cases output text will be saved in file.txt .
+
+3. Using docx2txt.pl :
+
+   a. docx2txt.pl infile.docx outfile.txt
+
+      Use - as the name of output text file, to send extracted text to STDOUT,
+      that is, console.
+
+   b. docx2txt.pl file.docx
+             OR
+      docx2txt.pl file
+
+      In both these cases output text will be saved in file.txt .
+
+   Input can also be provided via STDIN (console) using - as the name of input
+   docx file. Moreover redirection of input/output is possible with this script,
+   making it feasible to invoke it in even more ways as illustrated below.
+
+   c. docx2txt.pl < infile.docx
+
+      In this case input is read from infile.docx and output is sent to STDOUT.
+
+   d. docx2txt.pl < infile.docx > outfile.txt
+
+      In this case input is read from infile.docx and output is sent to
+      outfile.txt .
+
+   e. cat infile.docx | ./docx2txt.pl
+
+      In this case content of infile.docx is read via STDIN and output is sent
+      to STDOUT.
+
+   f. cat infile.docx | ./docx2txt.pl - outfile.txt
+
+      In this case content of infile.docx is read via STDIN and output is sent
+      to outfile.txt .
+
+Input argument in all the above cases can also be a directory holding the
+unzipped content of a .docx file. This feature is particulary useful if you do
+not have a commandline unzipping tool like Unzip/CakeCmd installed on your
+system.
+
+Usage help can be obtained by giving '-h' as the first argument to the script.
+
+   docx2txt.pl -h
+
+
+Tune your Experience
+--------------------
+
+You can change following settings via docx2txt.config file that is looked for
+- in the current directory,
+- user configuration directory (APPDATA on Windows, HOME on non-Windows), and
+- in the system configuration directory (same directory that holds the script
+  files on Windows, /etc or as set during installation on non-Windows),
+in the specified order. In case script does not find any configuration file, it
+continues with builtin default settings.
+ 
+a. Path to unzip program
+b. Path to temp directory
+c. Newline in output text file (Unix/Dos way)
+d. List level indentation amount
+e. Line width (used for short line justification)
+f. Showing of hyperlink along with linked text
+g. Extra conversion of &...; sequences [Experimental, not needed normally]
+
+You can also adjust list element indicator characters for different levels, in
+docx2txt.pl to suit your formatting taste. Currently 8 level list nesting is
+assumed, however if you want to deal with deeper nesting, you can adjust that
+as well in the perl script, by following the related comments there.
+
+
+Viewing the text content of Docx file in Editors and File browsers
+------------------------------------------------------------------
+
+1. MC (Midnight Commander)
+   -----------------------
+
+You can add following binding in ~/.mc/bindings and view the text content of a
+.docx file by hitting F3 key (assuming default key mappings) after moving the
+cursor over concerned filename in mc pannel.
+
+# Microsoft .docx Document
+regex/\.(docx|DOCX|Docx)$
+	View=%view{ascii} docx2txt.pl %f -
+
+
+2. VIm Editor
+   ----------
+
+You can add following lines in your ~/.vimrc to view the text content of a .docx
+file directly when using vim.
+
+"use docx2txt.pl to allow VIm to view the text content of a .docx file directly.
+autocmd BufReadPre *.docx set ro
+autocmd BufReadPost *.docx %!docx2txt.pl 
+
+Note that above .vimrc addition will allow you to view the text content of .docx
+files specified as command line argument to vim, but not of those read using
+":r file.docx".
+
+Please refer to http://vimdoc.sourceforge.net/htmldoc/autocmd.html for more
+information on autocmd.
+ 
+
+3. Emacs Editor
+   ------------
+
+You can add following lines in your ~/.emacs file to view the text content of
+a .docx file directly when using emacs.
+
+(add-to-list 'auto-mode-alist '("\\.docx\\'" . docx2txt))
+
+(defun docx2txt ()
+  "Run docx2txt on the entire buffer."
+  (shell-command-on-region (point-min) (point-max) "docx2txt.pl" t t))
+
+Be warned that with above ~/.emacs code addition, if you happen to save the
+buffer/file, it will overwrite the .docx file with the text content.
+
+Please explore "Filters -- making things readable:" section at
+http://www.emacswiki.org/emacs/CategoryExternalUtilities for more ways to view
+.docx file text content directly in emacs.
+
+
+Request
+-------
+
+If you are using this work directly/indirectly for non-personal purpose(s),
+please inform the author about it along with relevant url(s), so that it can be
+mentioned on the project homepage.
+
+In case you come across some issue with it, or need a feature that can be
+handled in docx to text conversion, please feel free to communicate. An
+accompanying test .docx document depicting the issue/need and the corresponding
+text file generated by MSOffice with character substitution enabled (or as you
+would like the text file to be) will be helpful.
+
+You can track the project via http://sourceforge.net/projects/docx2txt and refer
+to project cvs if there have been changes since this release.
+
+
+Disclaimer
+----------
+
+This program includes no warranty whatsoever. It is provided "AS IS". For more
+information please read the COPYING document, which should be included with the
+package, and describes the GNU Public License, which covers docx2txt.
+
+Sandeep Kumar ( shimple0 -AT- yahoo .DOT. com )
+

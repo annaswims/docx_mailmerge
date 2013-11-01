@@ -1,0 +1,112 @@
+Non-Windows users, please adjust following executables paths before proceeding
+for installation.
+
+- #! path for env in docx2txt.sh and docx2txt.pl
+- path for unzip in docx2txt.config
+
+You can skip installing docx2txt.sh and docx2txt.bat wrapper scripts (as
+applicable) during manual installation. These check for overwriting the output
+text file and have slightly restricted usage as compared to core docx2txt.pl
+script. [check README for details]
+
+However if you are using CakeCmd unzipper, docx2txt.bat can be quite handy as
+it internally manages unzipping the .docx files that do not have .zip extension.
+
+
+
+Installation on Linux, Cygwin, BSD and similar systems
+------------------------------------------------------
+
+Type "make" as root to install docx2txt script files for all users in
+/usr/local/bin and system-wide configuration file in /etc .
+
+If you want to install these in some other directory, you can do so via
+
+make BINDIR=/path/to/scripts/directory CONFIGDIR=/path/to/config/directory
+
+BSD users can use either GNU make or BSD make.
+
+Linux "make" installation also attempts to set systemConfigDir variable in
+installed docx2txt.pl file to specified CONFIGDIR.
+
+You will need make and install utilities installed on your system for
+installation via Makefile.
+
+In case, you don't want to use Makefile for installation, you can follow these
+steps for manual installation.
+
+1. Copy docx2txt.pl, docx2txt.sh and docx2txt.config to the desired directories.
+
+   cp docx2txt.pl docx2txt.sh /path/to/scripts/directory
+   cp docx2txt.config /path/to/config/directory
+
+2. Change the permission of copied files to 755 for docx2txt.pl and docx2txt.sh,
+   and 644 for docx2txt.config .
+
+   chmod 755 /path/to/scripts/directory/docx2txt.*
+   chmod 644 /path/to/config/directory/docx2txt.config
+
+3. Change the value of systemConfigDir variable (in non-Windows settings) in
+   installed docx2txt.pl file from "/etc" to specified config directory.
+
+4. Add the concerned scripts directory to your PATH, if not already in PATH.
+
+   PATH=$PATH:/path/to/scripts/directory
+
+
+Installation on Windows
+-----------------------
+
+I. You can install minimal Cygwin packages from http://www.cygwin.com/ to have
+   working bash, cat, env, install, make, perl and unzip utilities and thus
+   create the required Cygwin environment for using this utility.
+
+II. If you do not want to install even minimal Cygwin, you can try following
+   sequence for manual installation.
+
+a. Get following files from /usr/bin/ of cygwin installation and place them in,
+   say C:\docx2txt .
+
+   cygwin1.dll
+   perl.exe
+   cygperl*.dll
+   unzip.exe
+   cygcrypt*.dll
+
+b. Copy docx2txt.pl, docx2txt.bat and docx2txt.config to C:\docx2txt .
+
+c. Change path for unzip in docx2txt.config to C:/docx2txt/unzip.exe and path
+   for perl in docx2txt.bat to C:\docx2txt\perl.exe .
+
+d. You can now use this tool from within C:\docx2txt as follows.
+
+   docx2txt.bat file.docx
+   docx2txt.bat path-to-directory\file.docx
+
+   perl docx2txt.pl file.docx
+   perl docx2txt.pl directory\file.docx -
+   perl docx2txt.pl directory/file.docx file.txt
+   perl docx2txt.pl C:/somedir/file.docx
+   perl docx2txt.pl C:\somedir\file.docx C:\otherdir\converted.txt
+
+   Please view README for further usage information.
+
+III. You can also install this utility via WInstall.bat and follow the
+   instructions during installation. WInstall.bat can be invoked in two ways.
+
+   WInstall.bat installation-folder-name
+   WInstall.bat
+
+   In second case, install script will ask user for installation folder name.
+
+   It is advisable to have working installations of perl and atleast one command
+   line unzipper (Unzip/CakeCmd) before running this install script, so that it
+   can automatically set the desired paths in installed files.
+
+   You can use
+
+   - Cygwin perl or Strawberry perl [http://strawberryperl.com/] or any other
+     Windows native perl implementation 
+   - Cygwin unzip or UnZip for Windows [http://gnuwin32.sourceforge.net/downlinks/unzip.php]
+   - CakeCmd unzipper [http://www.quickzip.org/cakecmd.html]
+

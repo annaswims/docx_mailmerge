@@ -14,8 +14,8 @@ group :development do
   gem 'hirb'
   gem 'guard-rubocop'
   gem 'guard-rspec'
-  gem 'guard-cucumber'
   gem 'rubocop'
+  gem 'growl'
 end
 
 group :test do

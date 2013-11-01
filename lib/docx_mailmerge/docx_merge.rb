@@ -1,10 +1,10 @@
 module DocxMailmerge
   class DocxMerge
-    MISSING_VALUE_TEXT = "***MISSING VALUE***"
+    MISSING_VALUE_TEXT = "XXXXXXXXXX"
     attr_reader :doc, :data
 
     def initialize(file)
-      @original_doc = Nokogiri::XML(file)
+      @original_doc = Nokogiri::XML(file) { |config| config.strict.noblanks }
       @doc = @original_doc.clone
     end
 
@@ -79,8 +79,7 @@ module DocxMailmerge
     end
 
     def first_mergefield_name(node)
-      matches = node.match(/MERGEFIELD\s*\"?([\w]*)\"?(.*)/)
-      return matches[1]
+      node.match(/MERGEFIELD\s*\"?([\w]*)\"?(.*)/)[1]
     end
 
   end

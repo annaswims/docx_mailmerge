@@ -8,3 +8,18 @@ Documentation:
 
 SpaceInsideHashLiteralBraces:
   Enabled: false
+
+LeadingCommentSpace:
+  Enabled: false
+
+NumericLiterals:
+  Enabled: false
+
+CaseIndentation:
+  Enabled: false
+
+MethodLength:
+  Enabled: false
+
+RedundantSelf:
+  Enabled: false
