@@ -40,14 +40,14 @@ module DocxMailmerge
     end
 
     def read_existing_template_docx
-      ZipRuby::Archive.open(template_path) do |template|
+      Zip::Archive.open(template_path) do |template|
         yield template
       end
     end
 
     def create_new_zip_in_memory(buffer, template, data)
       n_entries = template.num_files
-      ZipRuby::Archive.open_buffer(buffer, ZipRuby::CREATE) do |archive|
+      Zip::Archive.open_buffer(buffer, Zip::CREATE) do |archive|
         n_entries.times do |i|
           entry_name = template.get_name(i)
           template.fopen(entry_name) do |f|

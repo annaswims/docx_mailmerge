@@ -66,7 +66,7 @@ end
 module DocxMailmerge
   module TestData
     BASE_PATH = SPEC_BASE_PATH.join("sample_input")
-    DATA = {"First_Name" => "Anna", "Last_Name" => "Carey"}
-    DOC_TYPES = %w{simple complex}
+    DATA = {"First_Name" => "Anita", "Last_Name" => "Borg"}
+    DOC_TYPES = %w{complex}
   end
 end
