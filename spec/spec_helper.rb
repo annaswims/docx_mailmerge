@@ -52,7 +52,7 @@ def get_doc_text(docx_file_path)
 end
 
 def open_doc(doc_file_path)
-  if RUBY_PLATFORM.include? "darwin"
+  if ENV["WORD"] && RUBY_PLATFORM.include?("darwin")
     cmd = "open #{doc_file_path}"
     puts "\n************************************"
     puts "attempting to open created file in Word."

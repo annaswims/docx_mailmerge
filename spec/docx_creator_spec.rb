@@ -22,7 +22,7 @@ describe "integration test", integration: true do
         output_file_path = "#{OUTPUT_DIR}/IntegrationTest#{doc_type}.docx"
         DocxMailmerge::DocxCreator.new(unmerged_docx_file_path).generate_docx_file(DocxMailmerge::TestData::DATA, output_file_path)
 
-        open_doc(output_file_path)  if ENV["WORD"]
+        open_doc(output_file_path)
 
         output_doc_text = get_doc_text(output_file_path)
         expected_doc_text = get_doc_text(handmerged_docx_file_path)

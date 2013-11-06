@@ -19,8 +19,9 @@ Or install it yourself as:
 ## Usage
 ```ruby
 docx_template = DocxMailmerge::DocxCreator.new(template_docx_file_path)
-merge_data = {first_name: "Anita",last_name: "Borg"}
+merge_data = {first_name: "Anita", last_name: "Borg"}
 ```
+and then
 ```ruby
   docx_template.generate_docx_file(merge_data, output_file_path)
 ```
@@ -34,6 +35,13 @@ You can also get an array of merge fields in a document
 ```ruby
   docx_template.merge_field_names
 ```
+
+
+## Contributing
+
+You'll need Perl installed to run the tests.
+
+If you'd automatically like to open the resulting word documents when you run rspec `WORD=true rspec`
 
 
 
