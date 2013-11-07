@@ -1,6 +1,8 @@
 module DocxMailmerge
   class DocxMerge
     MISSING_VALUE_TEXT = "XXXXXXXXXX"
+    WORD_CASES = {upper: 'Upper', caps: 'Caps', first_caps: 'FirstCap', lower: 'Lower' }
+
     attr_reader :doc, :data
 
     def initialize(file)
@@ -19,6 +21,20 @@ module DocxMailmerge
       @doc.to_xml
     end
 
+    #http://office.microsoft.com/en-us/word-help/format-merged-data-HP005187180.aspx
+    def to_template_case(format_name, merge_text)
+      case format_name
+      when WORD_CASES[:upper] then
+        merge_text.upcase
+      when  WORD_CASES[:first_caps], WORD_CASES[:caps] then
+        merge_text.gsub(/\b('?[a-z])/) { $1.capitalize }
+      when WORD_CASES[:lower] then
+        merge_text.downcase
+      else
+        merge_text
+      end
+    end
+
     private
 
     def simple_merge_nodes
@@ -31,13 +47,13 @@ module DocxMailmerge
 
     def simple_field_names
       simple_merge_nodes.map do |simple_node|
-        first_mergefield_name simple_node["w:instr"]
+        mergefield_name simple_node["w:instr"]
       end
     end
 
     def complex_field_names
       complex_merge_nodes.map do |complex_node|
-        first_mergefield_name complex_node.content
+        mergefield_name complex_node.content
       end
     end
 
@@ -73,13 +89,21 @@ module DocxMailmerge
     end
 
     def field_text(data, node)
-      #TODO: replacement text formatting  \* Upper \* MERGEFORMAT  \* Caps
-      field_name = first_mergefield_name(node)
-      data[field_name] || "#{MISSING_VALUE_TEXT}#{field_name}"
+      field_name = mergefield_name(node)
+      merge_text = to_template_case(mergefield_format_name(node), data[field_name])
+      merge_text || "#{MISSING_VALUE_TEXT}#{field_name}"
     end
 
-    def first_mergefield_name(node)
-      node.match(/MERGEFIELD\s*\"?([\w]*)\"?(.*)/)[1]
+    def mergefield_info(node)
+      node.match(/MERGEFIELD\s*\"?(\w*)\"?\W*(\w*)/)
+    end
+
+    def mergefield_format_name(node)
+      mergefield_info(node)[2]
+    end
+
+    def mergefield_name(node)
+      mergefield_info(node)[1].downcase
     end
 
   end

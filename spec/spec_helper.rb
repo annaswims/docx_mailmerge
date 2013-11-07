@@ -32,11 +32,6 @@ require 'nokogiri/diff'
 
 SPEC_BASE_PATH = Pathname.new(File.expand_path(File.dirname(__FILE__)))
 BASE_PATH = SPEC_BASE_PATH.join("sample_input")
-class String
-  def blank?
-    self !~ /[^[:space:]]/
-  end
-end
 
 RSpec::Matchers.define :be_same_xml_as do |expected|
   match do |actual|
@@ -66,7 +61,7 @@ end
 module DocxMailmerge
   module TestData
     BASE_PATH = SPEC_BASE_PATH.join("sample_input")
-    DATA = {"First_Name" => "Anita", "Last_Name" => "Borg"}
-    DOC_TYPES = %w{complex}
+    DATA = {"first_name" => "Anita", "last_name" => "Borg"}
+    DOC_TYPE = "complex"
   end
 end
