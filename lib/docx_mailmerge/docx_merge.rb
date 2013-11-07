@@ -21,20 +21,6 @@ module DocxMailmerge
       @doc.to_xml
     end
 
-    #http://office.microsoft.com/en-us/word-help/format-merged-data-HP005187180.aspx
-    def to_template_case(format_name, merge_text)
-      case format_name
-      when WORD_CASES[:upper] then
-        merge_text.upcase
-      when  WORD_CASES[:first_caps], WORD_CASES[:caps] then
-        merge_text.gsub(/\b('?[a-z])/) { $1.capitalize }
-      when WORD_CASES[:lower] then
-        merge_text.downcase
-      else
-        merge_text
-      end
-    end
-
     private
 
     def simple_merge_nodes
@@ -104,6 +90,20 @@ module DocxMailmerge
 
     def mergefield_name(node)
       mergefield_info(node)[1].downcase
+    end
+
+    #http://office.microsoft.com/en-us/word-help/format-merged-data-HP005187180.aspx
+    def to_template_case(format_name, merge_text)
+      case format_name
+      when WORD_CASES[:upper] then
+        merge_text.upcase
+      when  WORD_CASES[:first_caps], WORD_CASES[:caps] then
+        merge_text.gsub(/\b('?[a-z])/) { $1.capitalize }
+      when WORD_CASES[:lower] then
+        merge_text.downcase
+      else
+        merge_text
+      end
     end
 
   end
