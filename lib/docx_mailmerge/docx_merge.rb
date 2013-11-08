@@ -98,7 +98,7 @@ module DocxMailmerge
       when WORD_CASES[:upper] then
         merge_text.upcase
       when  WORD_CASES[:first_caps], WORD_CASES[:caps] then
-        merge_text.gsub(/\b('?[a-z])/) { $1.capitalize }
+        merge_text.gsub(/\b('?[a-z])/) {  Regexp.last_match[1].capitalize }
       when WORD_CASES[:lower] then
         merge_text.downcase
       else
