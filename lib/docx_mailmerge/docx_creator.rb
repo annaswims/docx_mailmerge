@@ -34,9 +34,17 @@ module DocxMailmerge
       if entry_name == 'word/document.xml'
         template_processor =  DocxMerge.new(f.read)
         template_processor.merge(data)
+      elsif entry_name == "word/settings.xml"
+        remove_mailmerge_node(f.read)
       else
         f.read
       end
+    end
+
+    def remove_mailmerge_node(settings_xml)
+      doc = Nokogiri::XML(settings_xml) { |config| config.strict.noblanks }
+      doc.xpath("//w:mailMerge").remove
+      doc.to_xml
     end
 
     def read_existing_template_docx
@@ -51,7 +59,7 @@ module DocxMailmerge
         n_entries.times do |i|
           entry_name = template.get_name(i)
           template.fopen(entry_name) do |f|
-            archive.add_buffer(entry_name, copy_or_template(entry_name, f, data))
+            archive.add_buffer(entry_name, copy_or_template(entry_name, f, data)) unless  entry_name == "word/_rels/settings.xml.rels"
           end
         end
       end
