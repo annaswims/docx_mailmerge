@@ -2,8 +2,9 @@ module DocxMailmerge
   class DocxCreator
     attr_reader :template_path, :template_processor
 
-    def initialize(template_path)
+    def initialize(template_path, mark_missing_values = nil)
       @template_path = template_path
+      @mark_missing_values = mark_missing_values
     end
 
     def generate_docx_file(data, file_name = "output_#{Time.now.strftime("%Y-%m-%d_%H%M")}.docx")
@@ -33,7 +34,7 @@ module DocxMailmerge
       # Inside the word document archive is one file with contents of the actual document. Modify it.
       if entry_name == 'word/document.xml'
         template_processor =  DocxMerge.new(f.read)
-        template_processor.merge(data)
+        template_processor.merge(data, @mark_missing_values)
       elsif entry_name == "word/settings.xml"
         remove_mailmerge_node(f.read)
       else

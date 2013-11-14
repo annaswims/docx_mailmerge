@@ -14,10 +14,10 @@ module DocxMailmerge
       (simple_field_names + complex_field_names).uniq
     end
 
-    def merge(data)
+    def merge(data, mark_missing_values = nil)
       @doc = @original_doc.clone
-      simple_merge(data)
-      complex_merge(data)
+      simple_merge(data, mark_missing_values)
+      complex_merge(data, mark_missing_values)
       @doc.to_xml
     end
 
@@ -43,15 +43,15 @@ module DocxMailmerge
       end
     end
 
-    def simple_merge(data)
+    def simple_merge(data, mark_missing_values)
       simple_merge_nodes.each do |simple_node|
-        ft = field_text(data, simple_node["w:instr"])
+        ft = field_text(data, mark_missing_values, simple_node["w:instr"])
         simple_node.search(".//w:t").first.content = ft
         simple_node.replace(simple_node.children)
       end
     end
 
-    def complex_merge(data)
+    def complex_merge(data, mark_missing_values)
       complex_merge_nodes.each do |complex_node|
         # begin tag
         complex_node.parent.previous_element.remove
@@ -60,7 +60,7 @@ module DocxMailmerge
         complex_node.parent.next_element.remove
 
         text_node = complex_node.parent.next_element
-        text_node.search(".//w:t").first.content = field_text(data, complex_node.content)
+        text_node.search(".//w:t").first.content = field_text(data, mark_missing_values, complex_node.content)
 
         # end tag and potientally more extra junk
         search_result = ""
@@ -74,10 +74,26 @@ module DocxMailmerge
       end
     end
 
-    def field_text(data, node)
+    def field_text(data, mark_missing_values, node)
+
       field_name = mergefield_name(node)
-      merge_text = to_template_case(mergefield_format_name(node), data[field_name])
-      merge_text || "#{MISSING_VALUE_TEXT}#{field_name}"
+      text = data[field_name]
+      if text.nil? || text.blank?
+        replace_missing_text text, mark_missing_values
+      else
+        to_template_case(mergefield_format_name(node), text)
+      end
+    end
+
+    def replace_missing_text(text, mark_missing_values)
+      case mark_missing_values
+      when "blank" then
+        MISSING_VALUE_TEXT
+      when "nil" then
+        text.nil? ? MISSING_VALUE_TEXT : text
+      else
+        text
+      end
     end
 
     def mergefield_info(node)

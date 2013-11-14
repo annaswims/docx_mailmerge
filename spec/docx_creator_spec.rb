@@ -65,6 +65,15 @@ describe "integration test", integration: true do
       output_doc_text.gsub(/\s/, '').should == expected_doc_text.gsub(/\s/, '')
     end
 
+
+    it "should replace nil data with a string" do
+      output_file_path = "#{OUTPUT_DIR}/IntegrationTestNil.docx"
+      DocxMailmerge::DocxCreator.new(unmerged_docx_file_path, "nil").generate_docx_file({}, output_file_path)
+      open_doc(output_file_path)
+      output_doc_text = get_doc_text(output_file_path)
+      output_doc_text.index(DocxMailmerge::DocxMerge::MISSING_VALUE_TEXT).should be >= 0
+    end
+
   end
 
 end

@@ -37,8 +37,20 @@ describe DocxMailmerge::DocxMerge do
 
   it "should enter Missing Value text for a blank value" do
     dataless_parser = DocxMailmerge::DocxMerge.new(xml_file)
-    out = dataless_parser.merge({})
+    out = dataless_parser.merge({"first_name" => " ", "last_name" => " "},"blank")
     out.index(DocxMailmerge::DocxMerge::MISSING_VALUE_TEXT).should >= 0
+  end
+
+   it "should enter Missing Value text for a nil value" do
+    dataless_parser = DocxMailmerge::DocxMerge.new(xml_file)
+    out = dataless_parser.merge({},"nil")
+    out.index(DocxMailmerge::DocxMerge::MISSING_VALUE_TEXT).should >= 0
+  end
+
+  it "should not add missing value text if mark_missing_values is nil" do
+    dataless_parser = DocxMailmerge::DocxMerge.new(xml_file)
+    out = dataless_parser.merge({"first_name" => " "})
+    out.index(DocxMailmerge::DocxMerge::MISSING_VALUE_TEXT).should eq nil
   end
 
   context "No merge fields" do
