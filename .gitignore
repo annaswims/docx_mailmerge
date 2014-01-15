@@ -18,3 +18,4 @@ tmp
 .~lock*
 *.docx#
 spec/sample_output/*
+docx2txt/*
