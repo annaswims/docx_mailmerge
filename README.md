@@ -36,10 +36,14 @@ You can also get an array of merge fields in a document
   docx_template.merge_field_names
 ```
 
+You may also replace all missing values with XXXXXXXXXX by setting the second argument to "blank" or "nil" to DocxMailmerge::DocxCreator.new
+```ruby
+docx_template = DocxMailmerge::DocxCreator.new(template_docx_file_path, "blank")
+```
+
 
 ## Contributing
-
-You'll need Perl installed to run the tests.
+To run the test you'll need docx2txt, a Perl library available at http://docx2txt.sourceforge.net/.  The test expects it at #{GEM_ROOT}/docx2txt/docx2txt.pl
 
 If you'd automatically like to open the resulting word documents when you run rspec `WORD=true rspec`
 
